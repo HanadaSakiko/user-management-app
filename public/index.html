@@ -18,13 +18,14 @@
         <div class="container">
             <h2>User Management</h2>
             <a href="login.html">login</a>
-            <form id="userForm">
-                <input type="text" id="searchInput" placeholder="ユーザー名またはメールアドレスを入力">
+            <form id="serch" action="../server/controllers/userController.js" method="post">
+                <input type="text" id="searchInput" placeholder="ユーザー名またはメールアドレスを入力"> 
                 <button type="button" id="searchButton">検索</button>
-
+            </form>
+            <form id="userForm">
                 <label for="name">Name</label>
                 <input type="text" id="name" placeholder="Name" required>
-                
+
                 <label for="email">Email</label>
                 <input type="email" id="email" placeholder="Email" required>
                 
