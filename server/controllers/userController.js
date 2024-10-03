@@ -109,3 +109,12 @@ exports.loginUser = (req, res) => {
         });
     });
 };
+
+//ユーザー検索を行う関数
+exports.SearchUsers = (req, res) => {
+  const query = req.query.query;
+  //queryが空、または存在しない場合はエラーを返す
+  if (!query) {
+    return res.status(400).send({ error: "検索条件が必要です" });
+  }
+}

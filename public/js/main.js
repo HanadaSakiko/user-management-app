@@ -95,3 +95,13 @@ function deleteUser(id) {
 // ページが最初にロードされたときに `getUsers` 関数を実行し、初期状態でユーザーリストを表示する
 // ページ読み込み時にすべてのユーザー情報を取得して、表示を行う
 getUsers();
+
+//検索条件を取得する
+// `e` はイベントオブジェクトを表し、フォーム送信時のデフォルト動作を防止するために使用する
+document.getElementById('searchForm').addEventListener('submit', SearchUsers);
+async function SearchUsers(e) {
+  const query = document.getElementById('searchInput').value;
+  //検索リクエストの送信
+  const response = await fetch(`http://localhost:3000/api/users/search?query=${encodeURIComponent(query)}`);
+  return response;
+}
