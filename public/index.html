@@ -17,11 +17,13 @@
         <!-- 左側: ユーザー管理フォーム -->
         <div class="container">
             <h2>User Management</h2>
-            <a href="login.html">login</a>
-            <form id="serch" action="../server/controllers/userController.js" method="post">
+            <!-- 検索フォーム -->
+            <form id="serchForm" action="../server/controllers/userController.js" method="post">
                 <input type="text" id="searchInput" placeholder="ユーザー名またはメールアドレスを入力"> 
                 <button type="button" id="searchButton">検索</button>
             </form>
+             <!-- 検索フォームここまで -->
+            <a href="login.html">login</a>
             <form id="userForm">
                 <label for="name">Name</label>
                 <input type="text" id="name" placeholder="Name" required>
