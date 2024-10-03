@@ -110,11 +110,24 @@ exports.loginUser = (req, res) => {
     });
 };
 
+
 //ユーザー検索を行う関数
 exports.SearchUsers = (req, res) => {
   const query = req.query.query;
-  //queryが空、または存在しない場合はエラーを返す
-  if (!query) {
-    return res.status(400).send({ error: "検索条件が必要です" });
-  }
-}
+  //ユーザーを検索しqueryが空、または存在しない場合はエラーを返す
+  User.Search(query, (error, results) => {
+    if (!query) {
+      return res.status(400).send({ error: "検索条件が必要です" });
+    } else {
+      return results;
+    }
+  });
+};
+
+
+
+
+    // // データベース操作中にエラーが発生した場合のエラーハンドリング
+    // if (err) return res.status(500).json({ error: 'Database error' });
+    // // 該当するユーザーが見つからない場合
+    // if (!user) return res.status(404).json({ error: 'User not found' });
