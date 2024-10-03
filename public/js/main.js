@@ -101,7 +101,8 @@ getUsers();
 document.getElementById('searchForm').addEventListener('submit', SearchUsers);
 async function SearchUsers(e) {
   const query = document.getElementById('searchInput').value;
-  //検索リクエストの送信
+  //検索リクエストの送信し、検索結果をresponseに格納
   const response = await fetch(`http://localhost:3000/api/users/search?query=${encodeURIComponent(query)}`);
   return response;
+  console.log(response);
 }
