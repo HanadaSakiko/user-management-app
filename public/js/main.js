@@ -96,16 +96,23 @@ function deleteUser(id) {
 // ページ読み込み時にすべてのユーザー情報を取得して、表示を行う
 getUsers();
 
-//検索条件を取得する
+//検索ボタンが押された時にユーザー検索の関数が発火するようにする
 searchButton.addEventListener('click', SearchUsers);
-
+//ユーザーを検索し、取得されたユーザーをリストで表示する関数
 async function SearchUsers() {
   const query = document.getElementById('searchInput').value;
   // console.log(query);
   // //検索リクエストの送信し、検索結果をresponseに格納
   const response = await fetch(`http://localhost:3000/api/users/search?query=${encodeURIComponent(query)}`);
-  const data = await response.json();
-  // // return response;
-  console.log(data);
+  //格納されたデータをjson形式にし、変数usersとする
+  const users = await response.json();
+
+  //検索されたユーザーをリストで一覧表示
+  const searchUsers = document.getElementById('searchUsers');
+  await users.forEach(user => {
+    searchUsers.insertAdjacentHTML("beforeend", `<li>${user.name} ${user.email}</li>`);
+  });
 }
+
+//検索ボタンが押された際にユーザー検索SearchUsers関数が実行され、リストに表示される
 SearchUsers();
