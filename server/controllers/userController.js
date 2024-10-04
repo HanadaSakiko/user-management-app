@@ -7,6 +7,10 @@ const bcrypt = require('bcrypt');
 // このモデルを通じてユーザー情報の作成、読み取り、更新、削除 (CRUD) 操作を実行する
 const User = require('../models/userModel');
 
+//DBの情報をインポート
+//TODO:処理が正しく動くかの確認のため、あとで削除
+const db = require('../config/db');
+
 // 新しいユーザーを作成する関数
 // req: クライアントから送られてきたリクエストオブジェクト
 // res: サーバーからクライアントに返すレスポンスオブジェクト
@@ -114,15 +118,35 @@ exports.loginUser = (req, res) => {
 //ユーザー検索を行う関数
 exports.SearchUsers = (req, res) => {
   const query = req.query.query;
-  //ユーザーを検索しqueryが空、または存在しない場合はエラーを返す
-  User.Search(query, (error, results) => {
+  // console.log(query);
+    //検索条件に名前もしくはメールアドレスが一致したユーザーを取り出し、変数sqlに代入
+    const sql = `SELECT * FROM users WHERE name LIKE ? OR email LIKE ?`;
+    const values = [`%${query}%`, `%${query}%`];
+
+    //ユーザーを検索しqueryが空、または存在しない場合はエラーを返す
     if (!query) {
       return res.status(400).send({ error: "検索条件が必要です" });
     } else {
-      return results;
+      //データベースから情報を取り出せなかったときはエラーを返し、取り出せた時は結果をjson形式で返す
+      db.query(sql, values, (err, results) => {
+        if (err) return res.status(500).send(err);
+        res.json(results);
+      });
     }
-  });
 };
+
+//TODO:usermModelsとuserContorollerの処理を別にしている場合。あとでコメントアウト戻す
+// exports.SearchUsers = (req, res) => {
+//   const query = req.query.query;
+//   //ユーザーを検索しqueryが空、または存在しない場合はエラーを返す
+//   User.Search(query, (error, results) => {
+//     if (!query) {
+//       return res.status(400).send({ error: "検索条件が必要です" });
+//     } else {
+//       return results;
+//     }
+//   });
+// };
 
 
 

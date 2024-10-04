@@ -97,12 +97,15 @@ function deleteUser(id) {
 getUsers();
 
 //検索条件を取得する
-document.getElementById('searchForm').addEventListener('submit', SearchUsers);
+searchButton.addEventListener('click', SearchUsers);
+
 async function SearchUsers() {
   const query = document.getElementById('searchInput').value;
-  //検索リクエストの送信し、検索結果をresponseに格納
-  const response = await fetch(`http://localhost:3000/users/search?query=${encodeURIComponent(query)}`);
-  // return response;
-  console.log(response);
+  // console.log(query);
+  // //検索リクエストの送信し、検索結果をresponseに格納
+  const response = await fetch(`http://localhost:3000/api/users/search?query=${encodeURIComponent(query)}`);
+  const data = await response.json();
+  // // return response;
+  console.log(data);
 }
 SearchUsers();
