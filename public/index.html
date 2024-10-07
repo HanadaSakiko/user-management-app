@@ -17,14 +17,17 @@
         <!-- 左側: ユーザー管理フォーム -->
         <div class="container">
             <h2>User Management</h2>
+            <!-- 検索フォーム -->
+            <form id="searchForm">
+                <input type="text" id="searchInput" placeholder="ユーザー名またはメールアドレスを入力"> 
+                <button type="button" id="searchButton">検索</button>
+            </form>
+             <!-- 検索フォームここまで -->
             <a href="login.html">login</a>
             <form id="userForm">
-                <input type="text" id="searchInput" placeholder="ユーザー名またはメールアドレスを入力">
-                <button type="button" id="searchButton">検索</button>
-
                 <label for="name">Name</label>
                 <input type="text" id="name" placeholder="Name" required>
-                
+
                 <label for="email">Email</label>
                 <input type="email" id="email" placeholder="Email" required>
                 
@@ -39,6 +42,12 @@
         <div class="container">
             <h2>Users List</h2>
             <ul id="userList"></ul>
+        </div>
+
+        <!-- 右側: 検索結果リスト -->
+        <div class="container">
+            <h2>Search Results</h2>
+            <ul id="searchUsers"></ul>
         </div>
     </div>
 

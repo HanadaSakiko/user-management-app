@@ -95,3 +95,49 @@ function deleteUser(id) {
 // ページが最初にロードされたときに `getUsers` 関数を実行し、初期状態でユーザーリストを表示する
 // ページ読み込み時にすべてのユーザー情報を取得して、表示を行う
 getUsers();
+
+//検索ボタンが押された時にユーザー検索の関数が発火するようにする
+searchButton.addEventListener('click', SearchUsers);
+
+//検索ボタンが再び押されたとき、結果をリセットする
+searchButton.addEventListener('click', ResetResult);
+//検索結果表示エリアのul要素のidを取得
+const searchUsers = document.getElementById('searchUsers');
+
+//結果を何度も表示させることを防ぐ（ボタンを押下した際、ulの子要素のliをループさせて削除させる関数）
+function ResetResult() {
+  while (searchUsers.lastChild) {
+    searchUsers.removeChild(searchUsers.lastChild);
+  }
+}
+
+//ユーザーを検索し、取得されたユーザーをリストで表示する関数
+async function SearchUsers() {
+  const query = document.getElementById('searchInput').value;
+  // //検索リクエストの送信し、検索結果をresponseに格納
+  const response = await fetch(`http://localhost:3000/api/users/search?query=${encodeURIComponent(query)}`);
+  //格納されたデータをjson形式にし、変数usersとする
+  const users = await response.json();
+
+  //@を除く特殊記号
+  const reg = new RegExp(/[!"#$%&'()\*\+\-\.,\/:;<=>?\[\\\]^_`{|}~]/);
+
+  //エラーハンドリング
+  if (!query) {
+    searchUsers.insertAdjacentHTML("beforeend", `<li>検索条件が必要です</li>`);
+  } else if (
+    reg.test(query)
+  ){
+    searchUsers.insertAdjacentHTML("beforeend", `<li>検索結果に記号空白を含まないようにしてください</li>`);
+  } else if (users.length === 0) {
+    searchUsers.insertAdjacentHTML("beforeend", `<li>該当するユーザーが見つかりませんでした</li>`);
+  } else {
+    //検索されたユーザーをリストで一覧表示
+    await users.forEach(user => {
+      searchUsers.insertAdjacentHTML("beforeend", `<li>${user.name} ${user.email}</li>`);
+    });
+  }
+}
+
+//検索ボタンが押された際にユーザー検索SearchUsers関数が実行され、リストに表示される
+SearchUsers();
