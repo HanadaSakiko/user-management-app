@@ -7,10 +7,6 @@ const bcrypt = require('bcrypt');
 // このモデルを通じてユーザー情報の作成、読み取り、更新、削除 (CRUD) 操作を実行する
 const User = require('../models/userModel');
 
-//DBの情報をインポート
-//TODO:処理が正しく動くかの確認のため、あとで削除
-const db = require('../config/db');
-
 // 新しいユーザーを作成する関数
 // req: クライアントから送られてきたリクエストオブジェクト
 // res: サーバーからクライアントに返すレスポンスオブジェクト
