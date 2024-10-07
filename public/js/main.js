@@ -101,7 +101,6 @@ searchButton.addEventListener('click', SearchUsers);
 //ユーザーを検索し、取得されたユーザーをリストで表示する関数
 async function SearchUsers() {
   const query = document.getElementById('searchInput').value;
-  // console.log(query);
   // //検索リクエストの送信し、検索結果をresponseに格納
   const response = await fetch(`http://localhost:3000/api/users/search?query=${encodeURIComponent(query)}`);
   //格納されたデータをjson形式にし、変数usersとする

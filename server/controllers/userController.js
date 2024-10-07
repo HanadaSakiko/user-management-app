@@ -114,44 +114,24 @@ exports.loginUser = (req, res) => {
     });
 };
 
-
 //ユーザー検索を行う関数
 exports.SearchUsers = (req, res) => {
   const query = req.query.query;
-  // console.log(query);
-    //検索条件に名前もしくはメールアドレスが一致したユーザーを取り出し、変数sqlに代入
-    const sql = `SELECT * FROM users WHERE name LIKE ? OR email LIKE ?`;
-    const values = [`%${query}%`, `%${query}%`];
-
     //ユーザーを検索しqueryが空、または存在しない場合はエラーを返す
     if (!query) {
       return res.status(400).send({ error: "検索条件が必要です" });
     } else {
-      //データベースから情報を取り出せなかったときはエラーを返し、取り出せた時は結果をjson形式で返す
-      db.query(sql, values, (err, results) => {
-        if (err) return res.status(500).send(err);
+      //UserModelsの処理 失敗したときはエラーを返し、検索が成功すればjson形式で結果を返す
+      User.Search(query, (err, results) => {
+
+         // データベース操作中にエラーが発生した場合のエラーハンドリング
+        if (err) return res.status(500).json({ error: 'Error comparing passwords' });
+
+        // 該当するユーザーが見つからない場合
+        if (!results) return res.status(404).json({ error: 'User not found' });
+
+        //検索に合致したユーザーを返す
         res.json(results);
       });
     }
 };
-
-//TODO:usermModelsとuserContorollerの処理を別にしている場合。あとでコメントアウト戻す
-// exports.SearchUsers = (req, res) => {
-//   const query = req.query.query;
-//   //ユーザーを検索しqueryが空、または存在しない場合はエラーを返す
-//   User.Search(query, (error, results) => {
-//     if (!query) {
-//       return res.status(400).send({ error: "検索条件が必要です" });
-//     } else {
-//       return results;
-//     }
-//   });
-// };
-
-
-
-
-    // // データベース操作中にエラーが発生した場合のエラーハンドリング
-    // if (err) return res.status(500).json({ error: 'Database error' });
-    // // 該当するユーザーが見つからない場合
-    // if (!user) return res.status(404).json({ error: 'User not found' });
