@@ -119,9 +119,16 @@ async function SearchUsers() {
   //格納されたデータをjson形式にし、変数usersとする
   const users = await response.json();
 
+  //@を除く特殊記号
+  const reg = new RegExp(/[!"#$%&'()\*\+\-\.,\/:;<=>?\[\\\]^_`{|}~]/);
+
   //エラーハンドリング
   if (!query) {
     searchUsers.insertAdjacentHTML("beforeend", `<li>検索条件が必要です</li>`);
+  } else if (
+    reg.test(query)
+  ){
+    searchUsers.insertAdjacentHTML("beforeend", `<li>検索結果に記号空白を含まないようにしてください</li>`);
   } else if (users.length === 0) {
     searchUsers.insertAdjacentHTML("beforeend", `<li>該当するユーザーが見つかりませんでした</li>`);
   } else {
